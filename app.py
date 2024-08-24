@@ -94,7 +94,7 @@ def addProd () :
            product_name = escape( request.form['prodname'])
            quantity = escape(request.form['prodquan'])
            price = escape(request.form['prodprice'])
-           photo = request.files.get('profile_picture')
+           photo = request.files.get('prodpic')
 
            if photo :
               if not utils.allowed_file_size(photo):
