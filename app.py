@@ -83,9 +83,84 @@ def main_admin () :
    return render_template('main_admin.html')
 
 @app.route('/addProd' , methods = ['GET' , 'POST'])
+@limiter.limit("10 per minute")
 def addProd () :
-   flash("Password does not match", "danger")
+   if request.method == 'POST' :
+    
+     if 'username' in session:
+     
+        if session['username'] == 'admin':
+
+           product_name = escape( request.form['prodname'])
+           quantity = escape(request.form['prodquan'])
+           price = escape(request.form['prodprice'])
+           photo = request.files.get('profile_picture')
+
+           if photo :
+              if not utils.allowed_file_size(photo):
+                 flash("Unallowed size" , "danger")
+                 return render_template('addProd.html')
+              if not utils.allowed_file(photo.filename):
+                flash("Unallowed extention" , "danger")
+                return render_template('addProd.html')
+        
+           product=database.get_product(connection,product_name)  
+
+
+           if product :
+              total_quantity =product[3]+quantity
+              database.add_product(connection,product_name,price,total_quantity,photo.filename)
+
+           else :
+              database.add_product(connection,product_name,price,quantity,photo.filename)
+      
+           photo.save(os.path.join(app.config['UPLOAD_FOLDER'],photo.filename))
+           return redirect(url_for('main_admin'))
+        
+        else :
+           flash("Unauthorized", "danger")
+           return redirect(url_for('Login')) ## to do : redirect to shopping page
+           
+      
+     else :
+         flash("Please Login First", "danger")
+         return redirect(url_for('Login'))  
+        
    return render_template('addProd.html')
+
+@app.route('/delProd' , methods = ['GET' , 'POST'])
+@limiter.limit("10 per minute")
+def delProd () :
+   if request.method == 'POST' :
+      
+       if 'username' in session:
+     
+           if session['username'] == 'admin':
+
+             product_name = escape( request.form['prodname'])
+   
+             product=database.get_product(connection,product_name)  
+
+             if product :
+              database.delete_product(connection,product_name)
+
+             else :
+              flash("Product is not exist", "danger")
+        
+      
+             return redirect(url_for('main_admin'))
+           
+           else :
+             flash("Unauthorized", "danger")
+             return redirect(url_for('Login')) ## to do : redirect to shopping page
+           
+       else :
+            flash("Please Login First", "danger")
+            return redirect(url_for('Login'))  
+          
+              
+
+   return render_template('delProd.html')
 
 
 if __name__ == '__main__' :

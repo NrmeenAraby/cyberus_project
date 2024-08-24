@@ -56,9 +56,17 @@ def product_tb(connection):                                      #products table
 
 def add_product(connection,product_name,price,quantity,photo):          #add product
     cursor= connection.cursor()
-    query='''' insert into products (product_name,price,quantity,photo) values (? , ? , ?, ? )'''
+    query=''' insert into products (product_name,price,quantity,photo) values (? , ? , ?, ? )'''
     cursor.execute(query,(product_name,price,quantity,photo))
     connection.commit()
+
+def get_product(connection,product_name):          #add product
+    cursor= connection.cursor()
+    query = ''' select * 
+                from products
+                where product_name = ?    '''
+    cursor.execute(query,(product_name))
+    return cursor.fetchone()
 
 def delete_product(connection,product_name):                    # delete product
     cursor=connection.cursor()
