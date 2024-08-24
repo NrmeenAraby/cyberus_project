@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>Add Product</title>
+         <meta charset="utf-8 /">
+         <meta name="viewport" content="width=device-width, initial-scale=1">
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="centered-body">
+    <div class="container d-flex justify-content-center align-items-center mt-5">
+        <div>
+            <form action="/addProd">
+                <h2 class="text-center mb-4">Add new Product</h2>
+
+                <div class="form-group mb-3">
+                    <label for="prodpic">Product Picture</label>
+                    <input id="prodpic" type="file" name="prodpic" class="form-control form-control-sm mt-2">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="prodname">Product Name</label>
+                    <input type="text" class="form-control form-control-md mt-2" id="prodname" placeholder="Product Name" required name="prodname">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="prodquan">Quantity</label>
+                    <input type="number" class="form-control form-control-md mt-2" id="prodquan" required name="prodquan">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="prodprice">Price</label>
+                    <input type="number" class="form-control form-control-md mt-2" id="prodprice" required name="prodprice">
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

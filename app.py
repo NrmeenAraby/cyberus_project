@@ -82,6 +82,11 @@ def main_admin () :
    flash("Password does not match", "danger")
    return render_template('main_admin.html')
 
+@app.route('/addProd' , methods = ['GET' , 'POST'])
+def addProd () :
+   flash("Password does not match", "danger")
+   return render_template('addProd.html')
+
 
 if __name__ == '__main__' :
     database.user_tb(connection)
