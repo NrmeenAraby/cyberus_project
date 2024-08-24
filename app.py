@@ -76,7 +76,13 @@ def Login () :
 # def logout():
 #    session.pop('username',None)
 #    return redirect(url_for('home'))       #to do  
-   
+
+@app.route('/main_admin' , methods = ['GET' , 'POST'])
+def main_admin () :
+   flash("Password does not match", "danger")
+   return render_template('main_admin.html')
+
+
 if __name__ == '__main__' :
     database.user_tb(connection)
     app.run(debug=True)
