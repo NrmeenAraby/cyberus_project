@@ -1,0 +1,16 @@
+:root {
+    --text-color: #e7e9ea;
+    --background-color: #1f2125;
+    --secondary-color: #343a40;
+    --font: ProximaVara, Helvetica Neue, Helvetica, Arial;
+}
+
+body {
+    background-color: var(--background-color);
+    background-image: url('dogs4.jpg'); /* Absolute path */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-color);
+    font-family: var(--font);
+}

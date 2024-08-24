@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>Log in</title>
+         <meta charset="utf-8 /">
+         <meta name="viewport" content="width=device-width, initial-scale=1">
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+     <body class="centered-body">
+        <div class="row justify-content-center mt-5 container-fluid">
+            <div class="col-lg-4">          
+            <form class="m-3 border border-info p-3 rounded-4" action="/Login" method="post">
+                
+                <div><h2 class="text-center">Log in</h2></div>
+
+                <div class="form-group mt-1">
+                  <label for="InputUsername">Username</label>
+                  <input type="text" class="form-control mt-2" id="InputUsername"  placeholder="Enter Username" required name="username">
+                </div>
+
+                <div class="form-group mt-3">
+                  <label for="InputPassword">Password</label>
+                  <input type="password" class="form-control mt-2" id="InputPassword" placeholder="Password" required name="password">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success mt-3">Log in</button>
+                </div>
+              </form>
+            </div>
+        </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+     </body>
+</html>
