@@ -65,7 +65,7 @@ def Login () :
            if utils.is_password_match(password , user[2]):
              session['username'] = username
              if username == "admin" :
-               return redirect(url_for('admin_main'))  # to do
+               return redirect(url_for('main_admin'))  # to do
              else :
                return redirect(url_for('shopping'))  # to do
            else :
