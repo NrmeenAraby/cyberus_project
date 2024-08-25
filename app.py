@@ -20,7 +20,7 @@ def starting_page ():
 
 @app.route('/Register' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")
-##
+
 def Register () :
    if request.method == 'POST' :
       username = escape( request.form['username'])
@@ -64,10 +64,10 @@ def Login () :
        if user :
            if utils.is_password_match(password , user[2]):
              session['username'] = username
-             if username == "admin" :
-                 return redirect(url_for('main_admin'))  # to do
-             else :
-                return redirect(url_for('shopping'))  # to do
+            #  if username == "admin" :
+            #    return redirect(url_for('admin_main'))  # to do
+            #  else :
+            #   return redirect(url_for('shopping'))  # to do
            else :
                flash("Password does not match", "danger")
                return render_template('Login.html')
@@ -113,7 +113,7 @@ def addProd () :
 
 
            if product :
-              total_quantity =product[3]+quantity
+              total_quantity =product[2]+quantity
               database.add_product(connection,product_name,price,total_quantity,photo.filename)
 
            else :
@@ -148,7 +148,7 @@ def delProd () :
 
              if product :
               database.delete_product(connection,product_name)
-
+              database.clear_comment(connection,product_name)
              else :
               flash("Product is not exist", "danger")
         
@@ -167,6 +167,29 @@ def delProd () :
 
    return render_template('delProd.html')
 
+
+@app.route('/searchprod', methods=['GET', 'POST'])    # search for product
+def searchprod():
+        product_name = escape(request.args.get('product_name'))
+        products = database.search_product(connection, product_name)
+        return render_template('search.html', products=products, product_name=product_name)
+
+
+#@app.route('/add_comment', methods=['GET', 'POST'])     #add comment
+#def add_comment():
+#  if request.method == 'POST': 
+#    text = escape(request.form['comment'])
+#    username=session.get('username')
+#if username:
+#  database.add_comment(connection, text, username)
+#else 
+#  flash("Please Login First", "danger")
+#return render_template('comment.html',comment=comment)
+
+#@app.route('/show_products', methods=['GET', 'POST'])   #show all products
+#def show_products():
+       # products = database.get_product(connection)
+       # return render_template('search.html', products=products)
 
 @app.route('/shopping' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")

@@ -1,4 +1,5 @@
 import re
+from urllib.parse import urlparse
 import bcrypt
 import os
 
@@ -9,9 +10,7 @@ MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-## 
 def allowed_file_size(file):
-
     file.seek(0, os.SEEK_END)
     file_size = file.tell()
     file.seek(0, os.SEEK_SET)
@@ -49,9 +48,17 @@ def is_strong_password(password):
     if require_digit and not any(char.isdigit() for char in password):
         return False
 
-   
+
     if require_special_char and not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
         return False
-   
+
 
     return True
+
+def is_valid_url(server):
+    parsed_url = urlparse(server)
+    if parsed_url.scheme not in ['http', 'https']:  # lazm http aw https
+        return False
+    #only allow port 5000
+    whitelist = [5000]
+    return parsed_url.port in whitelist

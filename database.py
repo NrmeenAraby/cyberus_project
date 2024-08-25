@@ -1,11 +1,11 @@
 import utils
 
 
-def connect(name='database'):                            #connection
+def connect(name='database'):                                        #connection
     import sqlite3
     return sqlite3.connect(name,check_same_thread=False)
 
-def user_tb(connection):                                      #user table
+def user_tb(connection):                                              #user table
     cursor = connection.cursor()
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS users (
@@ -27,13 +27,13 @@ def add_user(connection,username,password,credit_card,photo):          #add user
     connection.commit()
 
 
-def delete_user(connection,username):                    # delete user
+def delete_user(connection,username):                                 #delete user
     cursor=connection.cursor()
     query=''' delete from users where username = ? '''
     cursor.execute(query,(username,))
     connection.commit() 
 
-def get_user(connection , username ) :                   #get user
+def get_user(connection , username ) :                                 #get user
     cursor = connection.cursor()
     query = ''' select * 
                 from users
@@ -41,12 +41,11 @@ def get_user(connection , username ) :                   #get user
     cursor.execute(query, (username,))
     return cursor.fetchone()
 
-def product_tb(connection):                                      #products table
+def product_tb(connection):                                             #products table
     cursor = connection.cursor()
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            product_name TEXT NOT NULL UNIQUE,
+            product_name TEXT NOT NULL PRIMARY KEY,
             price REAL,
             quantity INTEGER,
             photo TEXT
@@ -54,19 +53,27 @@ def product_tb(connection):                                      #products table
     ''')
     connection.commit()
 
-def add_product(connection,product_name,price,quantity,photo):          #add product
+def add_product(connection,product_name,price,quantity,photo):         #add product
     cursor= connection.cursor()
     query=''' insert into products (product_name,price,quantity,photo) values (? , ? , ?, ? )'''
     cursor.execute(query,(product_name,price,quantity,photo))
     connection.commit()
 
-def get_product(connection,product_name):          #add product
+def get_product(connection,product_name):                       #show specific product
     cursor= connection.cursor()
     query = ''' select * 
                 from products
                 where product_name = ?    '''
     cursor.execute(query,(product_name))
     return cursor.fetchone()
+
+
+def get_product(connection):                       #show all products
+    cursor= connection.cursor()
+    query = ''' select * from products'''
+    cursor.execute(query)
+    return cursor.fetchone()
+
 
 def delete_product(connection,product_name):                    # delete product
     cursor=connection.cursor()
@@ -79,3 +86,34 @@ def search_product(connection,product_name):                    # search product
     query= f''' select * from products where product_name LIKE '%{ product_name }%' '''
     cursor.execute(query)
     return cursor.fetchall()
+ 
+
+def comment_tb(connection):                      # comment table
+    cursor = connection.cursor()
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS comment (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            comment TEXT NOT NULL,
+            FOREIGN KEY (product_name) REFERENCES products(product_name))
+        )
+    ''')
+    connection.commit()
+
+def add_comment(connection,username,product_name,comment): #add comment
+    cursor = connection.cursor()
+    query ='''insert into comment (username,comment,product_id) values(?,?,?) '''
+    cursor.execute(query,(username,comment,product_name))
+    connection.commit()
+
+def show_comment(connection,product_name):               #show comment
+    cursor = connection.cursor()
+    query = ''' select comment from comment where product_name = ? '''
+    cursor.execute(query,(product_name,))
+    return cursor.fetchall()
+
+def clear_comment(connection,product_name):                           # clear comment when we delete product
+    cursor = connection.cursor()
+    query = ''' Delete from comment where product_name = ?'''
+    query.execute(query,(product_name,))
+    connection.commit()
