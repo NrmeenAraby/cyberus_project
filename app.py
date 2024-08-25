@@ -173,7 +173,7 @@ def delProd () :
 def searchprod():
         product_name = escape(request.args.get('product_name'))
         products = database.search_product(connection, product_name)
-        return render_template('search.html', products=products, product_name=product_name)
+        return render_template('shopping.html', products=products, product_name=product_name)
 
 
 #@app.route('/add_comment', methods=['GET', 'POST'])     #add comment

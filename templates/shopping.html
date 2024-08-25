@@ -21,7 +21,11 @@
 </head>
 <body>
     <div class="container mt-4">
-        <h1 class="mb-4">Available Products</h1>
+        <h1 class="mb-4 text-center">Available Products</h1>
+        <form class="form-inline mb-4 justify-content-center" action="{{ url_for('searchprod') }}" method="GET">
+            <input class="form-control mr-2" type="text" name="product_name" placeholder="Search for a product" aria-label="Search" required>
+            <button class="btn btn-success" type="submit">Search</button>
+        </form>
         <div class="row">
             {% if products %}
                 {% for product in products %}
@@ -35,11 +39,11 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ product[1] }}</h5>
                                 <p class="card-text">
-                                    Price: ${{ product[2] }}<br>
+                                    Price: {{ product[2] }} $<br>
                                     Quantity: {{ product[3] }}
                                 </p>
                             </div>
-                            <a href="/" class="btn btn-success">Buy now</a>
+                            <a href="/" class="btn btn-success"><strong>Buy now</strong></a>
                         </div>
                     </div>
                 {% endfor %}
