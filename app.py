@@ -96,10 +96,11 @@ def addProd () :
      
         if session['username'] == 'admin':
 
-           product_name = escape( request.form['prodname'])
-           quantity = escape(request.form['prodquan'])
-           price = escape(request.form['prodprice'])
            photo = request.files.get('prodpic')
+           product_name = escape( request.form['prodname'])
+           quantity = int(escape(request.form['prodquan']))
+           price = int(escape(request.form['prodprice']))
+           
 
            if photo :
               if not utils.allowed_file_size(photo):
@@ -124,7 +125,7 @@ def addProd () :
         
         else :
            flash("Unauthorized", "danger")
-           return redirect(url_for('Login')) ## to do : redirect to shopping page
+           return redirect(url_for('shopping'))
            
       
      else :

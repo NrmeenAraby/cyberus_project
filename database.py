@@ -46,7 +46,7 @@ def product_tb(connection):                                             #product
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS products (
             product_name TEXT NOT NULL PRIMARY KEY,
-            price REAL,
+            price INTEGER,
             quantity INTEGER,
             photo TEXT
         )
@@ -64,15 +64,15 @@ def get_product(connection,product_name):                       #show specific p
     query = ''' select * 
                 from products
                 where product_name = ?    '''
-    cursor.execute(query,(product_name))
+    cursor.execute(query,(product_name,))
     return cursor.fetchone()
 
 
-def get_product(connection):                       #show all products
+#def get_product(connection):                       #show all products
     cursor= connection.cursor()
     query = ''' select * from products'''
     cursor.execute(query)
-    return cursor.fetchone()
+    return cursor.fetchone()#
 
 
 def delete_product(connection,product_name):                    # delete product
