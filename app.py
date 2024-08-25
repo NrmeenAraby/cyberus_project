@@ -12,6 +12,11 @@ connection = database.connect()
 app.secret_key = "SUPER-SECRET"
 limiter = Limiter(app=app, key_func=get_remote_address,
                   default_limits=["50 per minute"], storage_uri="memory://")
+@app.route('/')
+def starting_page ():
+ flash("Done" , "danger")
+
+ return render_template('starting_page.html')
 
 @app.route('/Register' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")
@@ -59,10 +64,10 @@ def Login () :
        if user :
            if utils.is_password_match(password , user[2]):
              session['username'] = username
-            #  if username == "admin" :
-            #    return redirect(url_for('admin_main'))  # to do
-            #  else :
-            #   return redirect(url_for('shopping'))  # to do
+             if username == "admin" :
+                 return redirect(url_for('main_admin'))  # to do
+             else :
+                return redirect(url_for('shopping'))  # to do
            else :
                flash("Password does not match", "danger")
                return render_template('Login.html')
@@ -163,6 +168,12 @@ def delProd () :
    return render_template('delProd.html')
 
 
+@app.route('/shopping' , methods = ['GET' , 'POST'])
+@limiter.limit("10 per minute")
+def shopping () :
+   return render_template('shopping.html')
+
 if __name__ == '__main__' :
     database.user_tb(connection)
+    database.product_tb(connection)
     app.run(debug=True)
