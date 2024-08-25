@@ -3,36 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
+    <title>Shopping Page</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-body {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-5">Our Products</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Available Products</h1>
         <div class="row">
-            {% for product in products %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img src="{{ url_for('static', filename='uploads/' + product[4]) }}" class="card-img-top" alt="{{ product[1] }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product[1] }}</h5>
-                        <p class="card-text">Price: ${{ product[2] }}</p>
-                        <p class="card-text">Available Quantity: {{ product[3] }}</p>
-                        <a href="#" class="btn btn-primary">Add to Cart</a>
+            {% if products %}
+                {% for product in products %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card d-flex">
+                            {% if product[3] %}
+                                <img src="{{ url_for('static', filename='uploads/' + (product[4] | string)) }}" class="card-img-top" alt="{{ product[1] }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product[1] }}</h5>
+                                <p class="card-text">
+                                    Price: ${{ product[2] }}<br>
+                                    Quantity: {{ product[3] }}
+                                </p>
+                            </div>
+                            <a href="/" class="btn btn-success">Buy now</a>
+                        </div>
                     </div>
-                </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>No products available at the moment.</p>
+            {% endif %}
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

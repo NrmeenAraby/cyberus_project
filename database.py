@@ -68,11 +68,11 @@ def get_product(connection,product_name):                       #show specific p
     return cursor.fetchone()
 
 
-#def get_product(connection):                       #show all products
-    cursor= connection.cursor()
+def get_all_products(connection):                       # show all products
+    cursor = connection.cursor()
     query = ''' select * from products'''
     cursor.execute(query)
-    return cursor.fetchone()#
+    return cursor.fetchall()
 
 
 def delete_product(connection,product_name):                    # delete product

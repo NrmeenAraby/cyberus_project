@@ -201,7 +201,8 @@ def searchprod():
 @app.route('/shopping' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")
 def shopping () :
-   return render_template('shopping.html')
+    products = database.get_all_products(connection)
+    return render_template('shopping.html', products=products)
 
 if __name__ == '__main__' :
     database.user_tb(connection)
