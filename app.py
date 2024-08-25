@@ -64,10 +64,10 @@ def Login () :
        if user :
            if utils.is_password_match(password , user[2]):
              session['username'] = username
-            #  if username == "admin" :
-            #    return redirect(url_for('admin_main'))  # to do
-            #  else :
-            #   return redirect(url_for('shopping'))  # to do
+             if username == "admin" :
+               return redirect(url_for('admin_main'))  # to do
+             else :
+               return redirect(url_for('shopping'))  # to do
            else :
                flash("Password does not match", "danger")
                return render_template('Login.html')
@@ -190,6 +190,12 @@ def searchprod():
 #def show_products():
        # products = database.get_product(connection)
        # return render_template('search.html', products=products)
+
+#@app.route('/show_products', methods=['GET', 'POST'])   #show specific products
+#def show_products():
+       #product_name = escape(request.args.get('product_name'))
+       # products = database.get_product(connection,product_name)
+       # return render_template('search.html', products=products, product_name=product_name)
 
 @app.route('/shopping' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")
