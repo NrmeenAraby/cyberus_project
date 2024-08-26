@@ -77,10 +77,10 @@ def Login () :
     else :
        return render_template('Login.html')
     
-# @app.route('/logout')
-# def logout():
-#    session.pop('username',None)
-#    return redirect(url_for('home'))       #to do  
+@app.route('/logout')
+def logout():
+    session.pop('username',None)
+    return redirect(url_for('starting_page'))       #to do  
 
 @app.route('/main_admin' , methods = ['GET' , 'POST'])
 def main_admin () :
