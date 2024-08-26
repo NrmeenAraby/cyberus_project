@@ -202,8 +202,37 @@ def searchprod():
 @limiter.limit("10 per minute")
 def shopping () :
     products = database.get_all_products(connection)
-    return render_template('shopping.html', products=products)
+    if request.method=='POST':
+      name=request.form.get('product_name')
+      price = request.form.get('price')
+      if 'username' not in session:
+        flash("You must be logged in to add items to your cart.", "warning")
+        return redirect(url_for('Login'))
+      else :
+        session['correct_mac']=utils.create_mac(price)
+        product = database.get_product(connection,name)
+        return redirect(url_for('checkout')) 
+    else :
+       return render_template('shopping.html', products=products)
 
+@app.route('/checkout', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
+def checkout():
+    if request.method == 'GET':
+        name = request.args.get('product_name')  
+        price = request.form.get('price')
+        products = database.get_all_products(connection)
+        product = database.get_product(connection,name)
+        Possible_Correct_MAC = utils.create_mac(price)
+
+        if 'correct_mac' in session and session['correct_mac'] == Possible_Correct_MAC:
+            flash(f"Purchase confirmed at price ${price}.")
+            return redirect(url_for('shopping'))
+        else:
+            flash("Purchase Failed, Please Try Again")
+            return redirect(url_for('shopping'))
+          #  shopping()
+    return render_template('checkout.html', product=product)
 if __name__ == '__main__' :
     database.user_tb(connection)
     database.product_tb(connection)

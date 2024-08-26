@@ -2,7 +2,8 @@ import re
 from urllib.parse import urlparse
 import bcrypt
 import os
-
+import hmac
+import hashlib
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
@@ -62,3 +63,13 @@ def is_valid_url(server):
     #only allow port 5000
     whitelist = [5000]
     return parsed_url.port in whitelist
+
+def create_mac(price):
+    secret_password = b"#%$2341dw/123\\*+d2merti231war4"
+    # Ensure the price is in string format and then encode it to bytes
+    price = str(price).encode('utf-8')
+    
+    # Create an HMAC object using SHA-256
+    mac = hmac.new(secret_password, price, hashlib.sha256).hexdigest()
+
+    return mac

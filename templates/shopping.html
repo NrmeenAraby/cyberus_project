@@ -43,7 +43,7 @@
                                     Quantity: {{ product[3] }}
                                 </p>
                             </div>
-                            <a href="/" class="btn btn-success"><strong>Buy now</strong></a>
+                            <a href="{{ url_for('checkout', product_id=product[0]) }}"  class="btn btn-success"><strong>Buy now</strong></a>
                         </div>
                     </div>
                 {% endfor %}
