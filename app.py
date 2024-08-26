@@ -26,8 +26,9 @@ def Register () :
       username = escape( request.form['username'])
       password = escape(request.form['password'])
       credit_card = escape(request.form['credit_card'])
+      balance = int(escape(request.form['balance']))
       photo = request.files.get('profile_picture')
-
+     
       if not utils.is_strong_password(password) :
          flash( "Weak Password, Please Choose a stronger one", "danger")
          return render_template('Register.html')
@@ -44,7 +45,7 @@ def Register () :
          flash("allready exist, Enter another one" , "danger")
          return render_template('Register.html')
       else :
-         database.add_user(connection,username,password,credit_card,photo.filename)
+         database.add_user(connection,username,password,credit_card,photo.filename,balance)
          photo.save(os.path.join(app.config['UPLOAD_FOLDER'],photo.filename))
          return redirect(url_for('Login'))   
    return render_template('Register.html')
@@ -100,7 +101,7 @@ def addProd () :
            product_name = escape( request.form['prodname'])
            quantity = int(escape(request.form['prodquan']))
            price = int(escape(request.form['prodprice']))
-           
+         
 
            if photo :
               if not utils.allowed_file_size(photo):
@@ -188,22 +189,22 @@ def searchprod():
 @limiter.limit("10 per minute")
 def add_comment():
   comments=None
-  comments=database.show_all_comments()
+  comments=database.show_all_comments(connection)
 
   if request.method == 'POST': 
       comment = escape(request.form['comment']) 
       username=session.get('username')
 
       if username:
-       database.add_comment(connection, comment, username)
-       comments=database.show_all_comments()
-       return render_template('comment.html',comments=comments)
+       database.add_comment(connection, comment)
+       comments=database.show_all_comments(connection)
+       return render_template('add_comment.html',comments=comments)
   
       else :
        flash("Please Login First", "danger")
        return redirect(url_for('Login'))  
   
-  return render_template('comment.html',comments=comments)
+  return render_template('add_comment.html',comments=comments)
 
 
 
@@ -284,4 +285,5 @@ def checkout():
 if __name__ == '__main__' :
     database.user_tb(connection)
     database.product_tb(connection)
+    database.comment_tb(connection)
     app.run(debug=True)

@@ -20,11 +20,11 @@ def user_tb(connection):                                              #user tabl
     connection.commit()
 
 
-def add_user(connection,username,password,credit_card,photo):          #add user
+def add_user(connection,username,password,credit_card,photo,balance):          #add user
     cursor= connection.cursor()
     hashed_pass = utils.hash_password(password)
-    query=''' insert into users (username,password, creditCard ,photo) values (? , ?, ? , ? )'''
-    cursor.execute(query,(username,hashed_pass,credit_card,photo))
+    query=''' insert into users (username,password, creditCard ,photo,balance) values (? , ?, ? , ? , ?)'''
+    cursor.execute(query,(username,hashed_pass,credit_card,photo,balance))
     connection.commit()
 
 
@@ -95,17 +95,17 @@ def comment_tb(connection):                      # comment table
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS comment (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL,
-            comment TEXT NOT NULL,
+            username TEXT ,
+            commento TEXT NOT NULL,
+            product_name TEXT ,
             FOREIGN KEY (product_name) REFERENCES products(product_name))
-        )
     ''')
     connection.commit()
 
-def add_comment(connection,username,product_name,comment): #add comment
+def add_comment(connection,comment): #add comment
     cursor = connection.cursor()
-    query ='''insert into comment (username,comment,product_id) values(?,?,?) '''
-    cursor.execute(query,(username,comment,product_name))
+    query ='''insert into comment (commento) values(?) '''
+    cursor.execute(query,(comment,))
     connection.commit()
 
 def show_comment(connection,product_name):               #show comment
@@ -125,3 +125,9 @@ def update_user(connection , username , current_balance):
     query = ''' UPDATE users set balance = ?  WHERE username = ? '''
     cursor.execute(query,(current_balance,username))
     connection.commit() 
+
+def show_all_comments(connection):               #show all_comments
+    cursor = connection.cursor()
+    query = ''' select commento from comment  '''
+    cursor.execute(query)
+    return cursor.fetchall()
