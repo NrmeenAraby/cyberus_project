@@ -224,8 +224,9 @@ def add_comment():
 @app.route('/shopping' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")
 def shopping () :
+    products=None
     products = database.get_all_products(connection)
-
+    
     if request.method=='POST':
       name=request.form.get('prodname')
       price = request.form.get('prodprice')
@@ -234,6 +235,7 @@ def shopping () :
         flash("You must be logged in to add items to your cart.", "warning")
         return redirect(url_for('Login'))
       else :
+        
         session['correct_mac']=utils.create_mac(price)
         product = database.get_product(connection,name)
         return redirect(url_for('checkout'),product=product) 
