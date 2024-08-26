@@ -272,15 +272,13 @@ def checkout():
             flash("Purchase Failed, Please Try Again")
             return redirect(url_for('shopping'))
         
-    product_name = request.args.get('product_name')
-    product_price = request.args.get('product_price')
-    product_quantity = request.args.get('product_quantity')
+    product_name = request.args.get('prodname')
+    product_price = request.args.get('prodprice')
     product_id = request.args.get('product_id')
 
     return render_template('checkout.html', 
                            product_name=product_name, 
                            product_price=product_price, 
-                           product_quantity=product_quantity,
                            product_id=product_id)
 
 if __name__ == '__main__' :

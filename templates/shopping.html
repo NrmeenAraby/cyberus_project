@@ -48,10 +48,9 @@
                                 <h5 class="card-title">{{ product[1] }}</h5>
                                 <p class="card-text">
                                     Price: {{ product[2] }} $<br>
-                                    Quantity: {{ product[3] }}
                                 </p>
                             </div>
-                            <a href="{{ url_for('checkout', product_id=product[0]) }}"  class="btn btn-success"><strong>Buy now</strong></a>
+                            <a href="{{ url_for('checkout', product_id=product[0],prodname=product[1],prodprice=product[2])}}"  class="btn btn-success"><strong>Buy now</strong></a>
                         </div>
                     </div>
                 {% endfor %}
