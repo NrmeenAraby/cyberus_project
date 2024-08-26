@@ -238,7 +238,11 @@ def shopping () :
         
         session['correct_mac']=utils.create_mac(price)
         product = database.get_product(connection,name)
-        return redirect(url_for('checkout'),product=product) 
+        return redirect(url_for('checkout', 
+                            product_name=product[1], 
+                            product_price=product[2], 
+                            product_quantity=product[3],
+                            product_id=product[0]))
       
     else :
        return render_template('shopping.html', products=products)
@@ -246,11 +250,11 @@ def shopping () :
 @app.route('/checkout', methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
 def checkout():
-    if request.method == 'GET':
-        name = request.args.get('prodname')  
-        price = request.form.get('prodprice')
+    if request.method == 'POST':
+       
+        price =int( request.form.get('prodprice'))
+        products = None
         products = database.get_all_products(connection)
-        product = database.get_product(connection,name)
         Possible_Correct_MAC = utils.create_mac(price)
 
         if 'correct_mac' in session and session['correct_mac'] == Possible_Correct_MAC:
@@ -259,8 +263,17 @@ def checkout():
         else:
             flash("Purchase Failed, Please Try Again")
             return redirect(url_for('shopping'))
-          #  shopping()
-    return render_template('checkout.html', product=product)
+        
+    product_name = request.args.get('product_name')
+    product_price = request.args.get('product_price')
+    product_quantity = request.args.get('product_quantity')
+    product_id = request.args.get('product_id')
+
+    return render_template('checkout.html', 
+                           product_name=product_name, 
+                           product_price=product_price, 
+                           product_quantity=product_quantity,
+                           product_id=product_id)
 
 if __name__ == '__main__' :
     database.user_tb(connection)

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,18 +10,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-4">
         <h1 class="mb-4 text-center">Checkout</h1>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Product: {{ product[1] }}</h5>
+                <h5 class="card-title">Product: {{ product_name }}</h5>
                 <p class="card-text">
-                    Price: {{ product[2] }} $<br>
-                    Quantity: {{ product[3] }}
+                    Price: {{ product_price }} $<br>
+                    Quantity: {{ product_quantity }}
                 </p>
-                <form action="/complete-purchase" method="POST">
-                    <input type="hidden" name="product_id" value="{{ product[0] }}">
+                <form action="/complete-purchase" method="GET">
+                    <input type="hidden" name="product_id" value="{{ product_id}}">
                     <button type="submit" class="btn btn-primary">Complete Purchase</button>
                 </form>
             </div>
@@ -32,4 +34,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

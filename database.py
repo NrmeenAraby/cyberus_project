@@ -45,6 +45,7 @@ def product_tb(connection):                                             #product
     cursor = connection.cursor()
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             product_name TEXT NOT NULL PRIMARY KEY,
             price INTEGER,
             quantity INTEGER,
