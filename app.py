@@ -198,7 +198,7 @@ def add_comment():
       if username:
        database.Comment(connection,comment,username)
        comments=database.show_all_comments(connection)
-       return render_template('Login.html',comments=comments)
+       return redirect(url_for('shopping'))
   
       else :
        flash("Please Login First", "danger")
