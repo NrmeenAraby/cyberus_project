@@ -192,13 +192,13 @@ def add_comment():
   comments=database.show_all_comments(connection)
 
   if request.method == 'POST': 
-      x = escape(request.form['comment']) 
+      comment = escape(request.form['comment']) 
       username=session.get('username')
 
       if username:
-       database.Comment(connection,x)
+       database.Comment(connection,comment,username)
        comments=database.show_all_comments(connection)
-       return render_template('add_comment.html',comments=comments)
+       return render_template('Login.html',comments=comments)
   
       else :
        flash("Please Login First", "danger")

@@ -99,10 +99,10 @@ def comment_tb(connection):                      # comment table
     connection.commit()
 
 
-def Comment(connection,comment): #add comment
+def Comment(connection,comment,username): #add comment
     cursor = connection.cursor()
-    query =''' insert into comment (commento) values(?) '''
-    cursor.execute(query,(comment,))
+    query =''' insert into comment (commento,username) values(?,?) '''
+    cursor.execute(query,(comment,username))
     connection.commit()
 
 def show_comment(connection,product_name):               #show comment
