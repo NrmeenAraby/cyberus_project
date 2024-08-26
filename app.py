@@ -149,7 +149,7 @@ def delProd () :
 
              if product :
               database.delete_product(connection,product_name)
-              database.clear_comment(connection,product_name)
+              #database.clear_comment(connection,product_name)
              else :
               flash("Product is not exist", "danger")
         
