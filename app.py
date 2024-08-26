@@ -192,11 +192,11 @@ def add_comment():
   comments=database.show_all_comments(connection)
 
   if request.method == 'POST': 
-      comment = escape(request.form['comment']) 
+      x = escape(request.form['comment']) 
       username=session.get('username')
 
       if username:
-       database.add_comment(connection, comment)
+       database.Comment(connection,x)
        comments=database.show_all_comments(connection)
        return render_template('add_comment.html',comments=comments)
   
@@ -284,6 +284,6 @@ def checkout():
 
 if __name__ == '__main__' :
     database.user_tb(connection)
-    database.product_tb(connection)
     database.comment_tb(connection)
+    database.product_tb(connection)
     app.run(debug=True)

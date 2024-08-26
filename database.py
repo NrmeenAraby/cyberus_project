@@ -5,6 +5,7 @@ def connect(name='database'):                                        #connection
     import sqlite3
     return sqlite3.connect(name,check_same_thread=False)
 
+
 def user_tb(connection):                                              #user table
     cursor = connection.cursor()
     cursor.execute('''
@@ -55,11 +56,6 @@ def product_tb(connection):                                             #product
     ''')
     connection.commit()
 
-def add_product(connection,product_name,price,quantity,photo):         #add product
-    cursor= connection.cursor()
-    query=''' insert into products (product_name,price,quantity,photo) values (? , ? , ?, ? )'''
-    cursor.execute(query,(product_name,price,quantity,photo))
-    connection.commit()
 
 def get_product(connection,product_name):                       #show specific product
     cursor= connection.cursor()
@@ -102,9 +98,10 @@ def comment_tb(connection):                      # comment table
     ''')
     connection.commit()
 
-def add_comment(connection,comment): #add comment
+
+def Comment(connection,comment): #add comment
     cursor = connection.cursor()
-    query ='''insert into comment (commento) values(?) '''
+    query =''' insert into comment (commento) values(?) '''
     cursor.execute(query,(comment,))
     connection.commit()
 
