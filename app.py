@@ -81,7 +81,7 @@ def Login () :
 @app.route('/logout')
 def logout():
    session.pop('username',None)
-   return redirect(url_for('home'))       #to do  
+   return redirect(url_for('starting_page'))       #to do  
 
 @app.route('/main_admin' , methods = ['GET' , 'POST'])
 def main_admin () :
@@ -253,7 +253,7 @@ def shopping () :
 def checkout():
     if request.method == 'POST':
        
-        price =int( request.form.get('prodprice'))
+        price = request.form.get('prodprice')
         Possible_Correct_MAC = utils.create_mac(price)
 
         if 'correct_mac' in session and session['correct_mac'] == Possible_Correct_MAC:
@@ -270,8 +270,8 @@ def checkout():
                flash(f"Purchase confirmed at price ${price}.")
                return redirect(url_for('shopping'))
         else:
-            flash("Purchase Failed, Please Try Again")
-            return redirect(url_for('shopping'))
+            
+            return f"Purchase Failed!!"
         
     product_name = request.args.get('prodname')
     product_price = request.args.get('prodprice')

@@ -19,9 +19,8 @@
                 <h5 class="card-title">Product: {{ product_name }}</h5>
                 <p class="card-text">
                     Price: {{ product_price }} $<br>
-                    Quantity: {{ product_quantity }}
                 </p>
-                <form action="/complete-purchase" method="GET">
+                <form method="POST" action="{{ url_for('checkout') }}">
                     <input type="hidden" name="product_id" value="{{ product_id}}">
                     <button type="submit" class="btn btn-primary">Complete Purchase</button>
                 </form>
