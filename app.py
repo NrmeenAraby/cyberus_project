@@ -207,21 +207,6 @@ def add_comment():
   return render_template('add_comment.html',comments=comments)
 
 
-
-#@app.route('/show_products', methods=['GET', 'POST'])   #show all products
-#@limiter.limit("10 per minute")
-#def show_products():
-       # products = database.get_product(connection)
-       # return render_template('search.html', products=products)
-
-#@app.route('/show_products', methods=['GET', 'POST'])   #show specific products
-#@limiter.limit("10 per minute")
-#def show_products():
-       #product_name = escape(request.args.get('product_name'))
-       # products = database.get_product(connection,product_name)
-       # return render_template('search.html', products=products, product_name=product_name)
-
-
 @app.route('/shopping' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")
 def shopping () :
