@@ -253,13 +253,21 @@ def checkout():
     if request.method == 'POST':
        
         price =int( request.form.get('prodprice'))
-        products = None
-        products = database.get_all_products(connection)
         Possible_Correct_MAC = utils.create_mac(price)
 
         if 'correct_mac' in session and session['correct_mac'] == Possible_Correct_MAC:
-            flash(f"Purchase confirmed at price ${price}.")
-            return redirect(url_for('shopping'))
+            username = session['username']
+            user = database.get_user(connection,username)
+            userbalance = user[5]
+            if price > userbalance :
+                flash("Purchase Failed, your balance is not enough")
+                return redirect(url_for('shopping'))
+            else :
+               current_balance = userbalance - price
+               database.update_user(connection,username, current_balance) 
+               #quanedit
+               flash(f"Purchase confirmed at price ${price}.")
+               return redirect(url_for('shopping'))
         else:
             flash("Purchase Failed, Please Try Again")
             return redirect(url_for('shopping'))
