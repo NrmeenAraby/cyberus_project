@@ -13,7 +13,8 @@ def user_tb(connection):                                              #user tabl
             username TEXT NOT NULL UNIQUE,
             password TEXT NOT NULL,
             creditCard INTEGER,
-            photo TEXT
+            photo TEXT,
+            balance INTEGER
         )
     ''')
     connection.commit()
@@ -118,3 +119,9 @@ def clear_comment(connection,product_name):                           # clear co
     query = ''' Delete from comment where product_name = ?'''
     query.execute(query,(product_name,))
     connection.commit()
+
+def update_user(connection , username , current_balance):
+    cursor = connection.cursor()
+    query = ''' UPDATE users set balance = ?  WHERE username = ? '''
+    cursor.execute(query,(current_balance,username))
+    connection.commit() 

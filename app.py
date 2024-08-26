@@ -79,8 +79,8 @@ def Login () :
     
 @app.route('/logout')
 def logout():
-    session.pop('username',None)
-    return redirect(url_for('starting_page'))       #to do  
+   session.pop('username',None)
+   return redirect(url_for('home'))       #to do  
 
 @app.route('/main_admin' , methods = ['GET' , 'POST'])
 def main_admin () :
