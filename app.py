@@ -170,48 +170,74 @@ def delProd () :
 
 
 @app.route('/searchprod', methods=['GET', 'POST'])    # search for product
+@limiter.limit("10 per minute")
 def searchprod():
-        product_name = escape(request.args.get('product_name'))
-        products = database.search_product(connection, product_name)
-        return render_template('shopping.html', products=products, product_name=product_name)
+        if 'username' in session :
+
+          product_name = escape(request.args.get('product_name'))
+          products = database.search_product(connection, product_name)
+          return render_template('shopping.html', products=products, product_name=product_name) ## to do :check
+        
+        else :
+           flash("You must login first","danger")
+           return redirect(url_for('Login'))  
+         
 
 
-#@app.route('/add_comment', methods=['GET', 'POST'])     #add comment
-#def add_comment():
-#  if request.method == 'POST': 
-#    text = escape(request.form['comment'])
-#    username=session.get('username')
-#if username:
-#  database.add_comment(connection, text, username)
-#else 
-#  flash("Please Login First", "danger")
-#return render_template('comment.html',comment=comment)
+@app.route('/add_comment', methods=['GET', 'POST'])     #add comment
+@limiter.limit("10 per minute")
+def add_comment():
+  comments=None
+  comments=database.show_all_comments()
+
+  if request.method == 'POST': 
+      comment = escape(request.form['comment']) 
+      username=session.get('username')
+
+      if username:
+       database.add_comment(connection, comment, username)
+       comments=database.show_all_comments()
+       return render_template('comment.html',comments=comments)
+  
+      else :
+       flash("Please Login First", "danger")
+       return redirect(url_for('Login'))  
+  
+  return render_template('comment.html',comments=comments)
+
+
 
 #@app.route('/show_products', methods=['GET', 'POST'])   #show all products
+#@limiter.limit("10 per minute")
 #def show_products():
        # products = database.get_product(connection)
        # return render_template('search.html', products=products)
 
 #@app.route('/show_products', methods=['GET', 'POST'])   #show specific products
+#@limiter.limit("10 per minute")
 #def show_products():
        #product_name = escape(request.args.get('product_name'))
        # products = database.get_product(connection,product_name)
        # return render_template('search.html', products=products, product_name=product_name)
 
+
 @app.route('/shopping' , methods = ['GET' , 'POST'])
 @limiter.limit("10 per minute")
 def shopping () :
     products = database.get_all_products(connection)
+
     if request.method=='POST':
-      name=request.form.get('product_name')
-      price = request.form.get('price')
+      name=request.form.get('prodname')
+      price = request.form.get('prodprice')
+
       if 'username' not in session:
         flash("You must be logged in to add items to your cart.", "warning")
         return redirect(url_for('Login'))
       else :
         session['correct_mac']=utils.create_mac(price)
         product = database.get_product(connection,name)
-        return redirect(url_for('checkout')) 
+        return redirect(url_for('checkout'),product=product) 
+      
     else :
        return render_template('shopping.html', products=products)
 
@@ -219,8 +245,8 @@ def shopping () :
 @limiter.limit("10 per minute")
 def checkout():
     if request.method == 'GET':
-        name = request.args.get('product_name')  
-        price = request.form.get('price')
+        name = request.args.get('prodname')  
+        price = request.form.get('prodprice')
         products = database.get_all_products(connection)
         product = database.get_product(connection,name)
         Possible_Correct_MAC = utils.create_mac(price)
@@ -233,6 +259,7 @@ def checkout():
             return redirect(url_for('shopping'))
           #  shopping()
     return render_template('checkout.html', product=product)
+
 if __name__ == '__main__' :
     database.user_tb(connection)
     database.product_tb(connection)
