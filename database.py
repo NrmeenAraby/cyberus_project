@@ -56,7 +56,13 @@ def product_tb(connection):                                             #product
     ''')
     connection.commit()
 
-
+def add_product(connection,product_name,price, quantity ,photo):          #add product
+    cursor= connection.cursor()
+    query=''' insert into products (product_name,price, quantity ,photo) values (? , ?, ? ,? )'''
+    cursor.execute(query,(product_name,price, quantity ,photo))
+    connection.commit()  
+  
+    
 def get_product(connection,product_name):                       #show specific product
     cursor= connection.cursor()
     query = ''' select * 
