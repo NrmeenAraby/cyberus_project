@@ -188,7 +188,6 @@ def searchprod():
 @app.route('/add_comment', methods=['GET', 'POST'])     #add comment
 @limiter.limit("10 per minute")
 def add_comment():
-  comments=None
   comments=database.show_all_comments(connection)
 
   if request.method == 'POST': 
@@ -222,7 +221,7 @@ def shopping () :
         return redirect(url_for('Login'))
       else :
         
-        session['correct_mac']=utils.create_mac(price)
+        session['Correct_MAC']=utils.create_mac(price)
         product = database.get_product(connection,name)
         return redirect(url_for('checkout', 
                             product_name=product[1], 
@@ -241,7 +240,7 @@ def checkout():
         price = request.form.get('prodprice')
         Possible_Correct_MAC = utils.create_mac(price)
 
-        if 'correct_mac' in session and session['correct_mac'] == Possible_Correct_MAC:
+        if 'Correct_MAC' in session and session['Correct_MAC'] == Possible_Correct_MAC:
             username = session['username']
             user = database.get_user(connection,username)
             userbalance = user[5]
