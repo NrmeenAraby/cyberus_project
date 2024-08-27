@@ -28,7 +28,6 @@ def add_user(connection,username,password,credit_card,photo,balance):          #
     cursor.execute(query,(username,hashed_pass,credit_card,photo,balance))
     connection.commit()
 
-
 def delete_user(connection,username):                                 #delete user
     cursor=connection.cursor()
     query=''' delete from users where username = ? '''
@@ -61,8 +60,8 @@ def add_product(connection,product_name,price, quantity ,photo):          #add p
     query=''' insert into products (product_name,price, quantity ,photo) values (? , ?, ? ,? )'''
     cursor.execute(query,(product_name,price, quantity ,photo))
     connection.commit()  
-  
-    
+
+
 def get_product(connection,product_name):                       #show specific product
     cursor= connection.cursor()
     query = ''' select * 
