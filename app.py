@@ -197,7 +197,7 @@ def add_comment():
       if username:
        database.Comment(connection,comment,username)
        comments=database.show_all_comments(connection)
-       return redirect(url_for('shopping'))
+       return render_template('add_comment.html',comments=comments)
   
       else :
        flash("Please Login First", "danger")
@@ -214,15 +214,15 @@ def shopping () :
     
     if request.method=='POST':
       name=request.form.get('prodname')
-      price = request.form.get('prodprice')
 
       if 'username' not in session:
         flash("You must be logged in to add items to your cart.", "warning")
         return redirect(url_for('Login'))
       else :
         
-        session['Correct_MAC']=utils.create_mac(price)
         product = database.get_product(connection,name)
+        session['Correct_MAC']=utils.create_mac(product[2])
+
         return redirect(url_for('checkout', 
                             product_name=product[1], 
                             product_price=product[2], 

@@ -20,6 +20,31 @@ def user_tb(connection):                                              #user tabl
     ''')
     connection.commit()
 
+def product_tb(connection):                                             #products table
+    cursor = connection.cursor()
+    cursor.execute('''
+                   CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_name TEXT NOT NULL PRIMARY KEY,
+            price INTEGER,
+            quantity INTEGER,
+            photo TEXT
+        )
+    ''')
+    connection.commit()
+
+def comment_tb(connection):                      # comment table
+    cursor = connection.cursor()
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS comment (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT ,
+            commento TEXT NOT NULL,
+            product_name TEXT ,
+            FOREIGN KEY (product_name) REFERENCES products(product_name))
+    ''')
+    connection.commit()
+
 
 def add_user(connection,username,password,credit_card,photo,balance):          #add user
     cursor= connection.cursor()
@@ -42,18 +67,7 @@ def get_user(connection , username ) :                                 #get user
     cursor.execute(query, (username,))
     return cursor.fetchone()
 
-def product_tb(connection):                                             #products table
-    cursor = connection.cursor()
-    cursor.execute('''
-                   CREATE TABLE IF NOT EXISTS products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            product_name TEXT NOT NULL PRIMARY KEY,
-            price INTEGER,
-            quantity INTEGER,
-            photo TEXT
-        )
-    ''')
-    connection.commit()
+
 
 def add_product(connection,product_name,price, quantity ,photo):          #add product
     cursor= connection.cursor()
@@ -91,17 +105,6 @@ def search_product(connection,product_name):                    # search product
     return cursor.fetchall()
  
 
-def comment_tb(connection):                      # comment table
-    cursor = connection.cursor()
-    cursor.execute('''
-            CREATE TABLE IF NOT EXISTS comment (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT ,
-            commento TEXT NOT NULL,
-            product_name TEXT ,
-            FOREIGN KEY (product_name) REFERENCES products(product_name))
-    ''')
-    connection.commit()
 
 
 def Comment(connection,comment,username): #add comment
